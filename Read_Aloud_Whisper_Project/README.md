@@ -19,10 +19,11 @@ Written in Python using:</br>
 - [Pyttsx3](https://pypi.org/project/pyttsx3/)
 
 </br>
-Version 2 with GUI now available in main_with_GUI.py file. </br>
+Version 2 with GUI now available in main_with_GUI.py file. 
+
+</br>
+</br>
 ![](gui.PNG)
-</br>
-</br>
 
 Find me on [YouTube](https://www.youtube.com/channel/UCQVdl4zwcLXKbz4PTflmdkA/videos)
 
