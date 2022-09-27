@@ -19,7 +19,8 @@ Written in Python using:</br>
 - [Pyttsx3](https://pypi.org/project/pyttsx3/)
 
 </br>
-Version 2 with GUI now available in main_with_GUI.py file. 
+Version 2 with GUI now available in main_with_GUI.py file. </br>
+![](gui.PNG)
 </br>
 </br>
 
