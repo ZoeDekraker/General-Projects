@@ -16,7 +16,9 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 frames = []
-flag = 1
+flag = True
+
+
 
 # start recording
 def start_recording():
@@ -34,11 +36,11 @@ def start_recording():
         input = stream.read(1024)
         frames.append(input)
         main.update()
-        flag = 2
+        flag = False
 
 # end recording
 def stop_recording():
-    if flag == 1:
+    if flag == True:
         messagebox.showinfo(title= "Error", message= "You need to start recording before you can stop recording.")
     else:
         stream.stop_stream()
@@ -48,7 +50,7 @@ def stop_recording():
 
 # write audio to file
 def audio_to_file(audio):
-    flag = 1
+    recording = True
     file_name = "sound_smart.wav"
     audio_file = wave.open(file_name, "wb")
     audio_file.setnchannels(1)
@@ -105,6 +107,9 @@ def exit_editor():
 # clear text function
 def clear_text():
     text_area.delete(1.0, END)
+
+
+
 
 
 #<-------------------GUI--------------------->#
