@@ -12,6 +12,7 @@ function Read-Aloud()
     
 }
 
+
 # Save text in box to file
 function Save-File()
 {
@@ -24,6 +25,18 @@ function Save-File()
     $addy = $SaveFileDialog.FileName
     $textBox1.Text | Out-File $addy
 
+}
+
+# export audio to file
+function Export-Audio()
+ {
+    $content = $textBox1.Text
+    $speaker = [System.Speech.Synthesis.SpeechSynthesizer]::new()
+    $speaker.SelectVoice("Microsoft Zira Desktop")
+    $speaker.SetOutputToWaveFile("audio_out.wav")
+    $speaker.Speak($content)
+    $speaker.Dispose()
+   [System.Windows.Forms.MessageBox]::Show('Audio saved as "audio_out.WAV" ','Saved') 
 }
 
 
@@ -39,15 +52,23 @@ $form.Topmost = $true
 
 # read aloud button
 $readButton = New-Object System.Windows.Forms.Button
-$readButton.Location = New-Object System.Drawing.Point(120,25) 
+$readButton.Location = New-Object System.Drawing.Point(100,25) 
 $readButton.Size = New-Object System.Drawing.Size(90,75)
 $readButton.Text = 'Read Aloud'
 $form.Controls.Add($readButton)
 $readButton.Add_Click({Read-Aloud})
 
+# save audio button
+$saveAudioButton = New-Object System.Windows.Forms.Button
+$saveAudioButton.Location = New-Object System.Drawing.Point(220.5,25) 
+$saveAudioButton.Size = New-Object System.Drawing.Size(90,75)
+$saveAudioButton.Text = 'Save Audio'
+$form.Controls.Add($saveAudioButton)
+$saveAudioButton.Add_Click({Export-Audio})
+
 # save text button
 $saveButton = New-Object System.Windows.Forms.Button
-$saveButton.Location = New-Object System.Drawing.Point(317.5,25) 
+$saveButton.Location = New-Object System.Drawing.Point(340.5,25) 
 $saveButton.Size = New-Object System.Drawing.Size(90,75)
 $saveButton.Text = 'Save Text'
 $form.Controls.Add($saveButton)
@@ -76,3 +97,5 @@ $cancelButton.DialogResult = 'Ok' #close form
 
 # show form
 $form.ShowDialog()
+
+
