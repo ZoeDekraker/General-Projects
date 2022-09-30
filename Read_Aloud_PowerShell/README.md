@@ -5,6 +5,6 @@ Well now you can type your thoughts into this program first, hear it played back
 
 Easy to run, requires not additional downloads - only a computer with Windows/.NET framework.
 
-![](posh_gui.PNG)
+![](small_gui.png)
 
 Additional details/projects on main website www.zoedekraker.com/projects
