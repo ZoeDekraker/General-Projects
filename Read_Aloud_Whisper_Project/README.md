@@ -24,7 +24,6 @@ Version 2 with GUI now available in main_with_GUI.py file.
 </br>
 </br>
 
-Find me on [YouTube](https://www.youtube.com/channel/UCQVdl4zwcLXKbz4PTflmdkA/videos)
 
 My main [Website](https://www.zoedekraker.com/)
 
