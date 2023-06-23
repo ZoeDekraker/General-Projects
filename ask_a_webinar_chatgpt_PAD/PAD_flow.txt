@@ -1,0 +1,67 @@
+# # Get user input and store in variables
+@@statistics_TextBlock: '3'
+@@statistics_Input_Text: '2'
+@@statistics_Input_File: '1'
+@@statistics_Action_Submit: '1'
+Display.ShowCustomDialog CardTemplateJson: '''{
+  \"type\": \"AdaptiveCard\",
+  \"version\": \"1.4\",
+  \"id\": \"AdaptiveCard\",
+  \"body\": [
+    {
+      \"type\": \"TextBlock\",
+      \"id\": \"Text block\",
+      \"text\": \"${Text_block_Text}\"
+    },
+    {
+      \"type\": \"Input.Text\",
+      \"id\": \"input question\"
+    },
+    {
+      \"type\": \"TextBlock\",
+      \"id\": \"Text block2\",
+      \"text\": \"${Text_block2_Text}\"
+    },
+    {
+      \"type\": \"Input.File\",
+      \"id\": \"File input\"
+    },
+    {
+      \"type\": \"TextBlock\",
+      \"id\": \"Text block3\",
+      \"text\": \"${Text_block3_Text}\",
+      \"wrap\": true
+    },
+    {
+      \"type\": \"Input.Text\",
+      \"id\": \"input api key\"
+    }
+  ],
+  \"actions\": [
+    {
+      \"type\": \"Action.Submit\",
+      \"id\": \"Submit\",
+      \"title\": \"${Submit_Title}\"
+    }
+  ],
+  \"FormTitle\": \"${AdaptiveCard_FormTitle}\"
+}''' CustomFormData=> CustomFormData ButtonPressed=> ButtonPressed @AdaptiveCard_FormTitle: $'''Ask a Webinar''' @Text_block_Text: $'''Enter question''' @Text_block2_Text: $'''Select transcript file(.txt)''' @Text_block3_Text: $'''OpenAI API Key''' @Submit_Title: $'''Ask the A.I'''
+SET Question TO CustomFormData['input question']
+SET File_Path TO CustomFormData['File input']
+# # Get trancript and clean newlines for JSON
+File.ReadTextFromFile.ReadText File: File_Path Encoding: File.TextFileEncoding.UTF8 Content=> FileContents
+Text.Trim Text: FileContents TrimOption: Text.TrimOption.Both TrimmedText=> TrimmedText
+Text.SplitText.SplitWithDelimiter Text: TrimmedText CustomDelimiter: $'''\\n''' IsRegEx: True Result=> TextList
+Text.Replace Text: TrimmedText TextToFind: $'''\\r\\n''' IsRegEx: True IgnoreCase: False ReplaceWith: $'''.''' ActivateEscapeSequences: False Result=> Transcript
+# # Construct body of request with prompt and transcript
+SET JSON_body TO $'''{
+    \"model\": \"gpt-3.5-turbo-16k-0613\",
+    \"messages\": [{\"role\": \"user\", \"content\": \"You are a helpful assistant. This is the question you are to help answer:  %Question%  Read the following transcript and answer the question. Here is the transcript:%Transcript%\"}],
+\"temperature\": 0.0
+}'''
+# # Send request to OpenAI API
+Web.InvokeWebService.InvokeWebService Url: $'''https://api.openai.com/v1/chat/completions''' Method: Web.Method.Post Accept: $'''application/json''' ContentType: $'''application/json''' CustomHeaders: $'''Authorization: Bearer %OPENAI_API_KEY%''' RequestBody: JSON_body ConnectionTimeout: 30 FollowRedirection: True ClearCookies: False FailOnErrorStatus: False EncodeRequestBody: False UserAgent: $'''Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.21) Gecko/20100312 Firefox/3.6''' Encoding: Web.Encoding.AutoDetect AcceptUntrustedCertificates: False ResponseHeaders=> WebServiceResponseHeaders Response=> WebServiceResponse StatusCode=> StatusCode
+# # transform JSON response to object.
+Variables.ConvertJsonToCustomObject Json: WebServiceResponse CustomObject=> JsonAsCustomObject
+SET response TO JsonAsCustomObject['choices'][0]['message']['content']
+Display.ShowMessageDialog.ShowMessage Title: $'''A.I Response''' Message: response Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed2
