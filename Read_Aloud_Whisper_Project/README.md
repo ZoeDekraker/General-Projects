@@ -9,7 +9,7 @@ OpenAI recently released 'Whisper', their general-purpose speech recognition mod
 This program records your audio and speaks it back to you with the added option of writing the results to a txt file, for you to copy/paste into your email.
 
 ## Why?
-Check if what you say makes sense before you send it!
+Check if what you say makes sense before you send it!(and the appeal of the challenge) 
 
 ## Language:
 Written in Python using:</br>
@@ -25,5 +25,4 @@ Version 2 with GUI now available in main_with_GUI.py file.
 </br>
 
 
-My main [Website](https://www.zoedekraker.com/)
 
