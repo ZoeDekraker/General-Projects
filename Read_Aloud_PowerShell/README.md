@@ -7,4 +7,3 @@ Easy to run, requires not additional downloads - only a computer with Windows/.N
 
 ![](small_gui.png)
 
-Additional details/projects on main website www.zoedekraker.com/projects
